@@ -132,7 +132,7 @@ const releaseNote = (frequency: number) => {
   if (!note) return
 
   const audioCtx = getAudioContext();
-  note.gain.gain.setTargetAtTime(0, audioCtx.currentTime, 0.50);
+  note.gain.gain.setTargetAtTime(0, audioCtx.currentTime, 0.20);
 
   delete notesPlaying[frequency];
 }
