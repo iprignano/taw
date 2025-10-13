@@ -102,31 +102,33 @@ export default function Keyboard() {
 
   return (
     <div class={styles.wrapper}>
-      {notes().map(({ note, freq }) => {
-        return (
-          <button
-            classList={{ [styles.black]: note.includes('#'), [styles.key]: true }}
-            onMouseDown={(evt) => {
-              // don't do anything if it's not a left-click
-              if (evt.button !== 0) return;
-              evt.preventDefault();
+      <div class={styles.keys}>
+        {notes().map(({ note, freq }) => {
+          return (
+            <button
+              classList={{ [styles.black]: note.includes('#'), [styles.key]: true }}
+              onMouseDown={(evt) => {
+                // don't do anything if it's not a left-click
+                if (evt.button !== 0) return;
+                evt.preventDefault();
 
-              setIsPressedDown(true);
-              playNote(freq);
-            }}
-            onMouseUp={() => {
-              setIsPressedDown(false);
-              releaseNote(freq);
-            }}
-            onMouseEnter={() => {
-              if (isPressedDown()) playNote(freq);
-            }}
-            onMouseLeave={() => {
-              releaseNote(freq);
-            }}
-          />
-        );
-      })}
+                setIsPressedDown(true);
+                playNote(freq);
+              }}
+              onMouseUp={() => {
+                setIsPressedDown(false);
+                releaseNote(freq);
+              }}
+              onMouseEnter={() => {
+                if (isPressedDown()) playNote(freq);
+              }}
+              onMouseLeave={() => {
+                releaseNote(freq);
+              }}
+            />
+          );
+        })}
+      </div>
     </div>
   );
 }

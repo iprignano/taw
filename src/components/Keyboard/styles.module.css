@@ -1,21 +1,30 @@
 .wrapper {
   width: 100%;
-  color: white;
   display: flex;
-  gap: 2px;
-  position: relative;
   justify-content: center;
+  align-items: center;
+
+  --keys-width: 50px;
+  --keys-height: 150px;
+}
+
+.keys {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  gap: 2px;
 }
 
 .key {
   appearance: none;
   background-color: white;
   border: none;
-  width: 50px;
-  height: 150px;
+  width: var(--keys-width);
+  height: var(--keys-height);
   border-radius: 5px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
+  position: relative;
 }
 
 .black {

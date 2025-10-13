@@ -15,8 +15,18 @@ export default function App() {
       <Header />
 
       <div class={styles.body}>
-        <DrumsSequencer />
-        <Keyboard />
+        <div class={`${styles.drums} ${styles.instrument}`}>
+          <div class={styles.title}>
+            <span class="monospace">drums</span>
+          </div>
+          <DrumsSequencer />
+        </div>
+        <div class={`${styles.keyboard} ${styles.instrument}`}>
+          <div class={styles.title}>
+            <span class="monospace">keyboard</span>
+          </div>
+          <Keyboard />
+        </div>
       </div>
 
       <Footer />

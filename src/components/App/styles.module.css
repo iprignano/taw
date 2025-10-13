@@ -9,3 +9,36 @@
   overflow-x: scroll;
   place-content: center;
 }
+
+.instrument {
+  display: flex;
+  flex-direction: row;
+  height: 50%;
+}
+
+.drums {
+  background: rgb(37, 67, 86);
+}
+
+.keyboard {
+  background: rgb(39, 83, 70);
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, .2);
+}
+
+.title span {
+  text-transform: uppercase;
+  display: block;
+  font-size: 11px;
+  letter-spacing: 3px;
+  font-weight: 300;
+  transform: rotate(-90deg);
+  color: rgba(255, 255, 255, .9);
+}
