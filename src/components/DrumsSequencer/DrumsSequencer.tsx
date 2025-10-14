@@ -11,11 +11,11 @@ export default function DrumsSequencer() {
     <div class={`${styles.wrapper} monospace`}>
       <div />
       {STEPS_ARRAY.map((step) => (
-        <div>{step}</div>
+        <div class={styles.step}>{step}</div>
       ))}
       {INSTRUMENTS.map((instrument) => (
         <>
-          <div>{instrument}</div>
+          <div class={styles.instrument}>{instrument}</div>
           {STEPS_ARRAY.map((step) => {
             const attributes = {
               [`data-${instrument}-step`]: step,
