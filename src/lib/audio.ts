@@ -6,9 +6,31 @@ const getAudioContext = () => {
   return audioContext;
 }
 
-// ================
-// Drums
-// ================
+const getCompressorNode = () => {
+  const audioCtx = getAudioContext();
+  const compressor = audioCtx.createDynamicsCompressor();
+  compressor.threshold.setValueAtTime(-60, audioCtx.currentTime);
+  compressor.knee.setValueAtTime(90, audioCtx.currentTime);
+  compressor.ratio.setValueAtTime(20, audioCtx.currentTime);
+  compressor.attack.setValueAtTime(0, audioCtx.currentTime);
+  compressor.release.setValueAtTime(0.2, audioCtx.currentTime);
+  compressor.connect(audioContext.destination);
+  return compressor
+}
+
+const getDestinationNode = () => {
+  return getCompressorNode();
+}
+
+const getFilterNode = (type: BiquadFilterType, frequency: number, Q?: number) => {
+  const audioCtx = getAudioContext();
+  return new BiquadFilterNode(audioCtx, {
+    type,
+    frequency,
+    Q
+  });
+}
+
 const getNoiseAudioNode = () => {
   const audioCtx = getAudioContext();
   const bufferSize = audioCtx.sampleRate;
@@ -30,28 +52,24 @@ const getNoiseAudioNode = () => {
   });
 }
 
-const getFilterNode = (type: BiquadFilterType, frequency: number, Q?: number) => {
-  const audioCtx = getAudioContext();
-  return new BiquadFilterNode(audioCtx, {
-    type,
-    frequency,
-    Q
-  });
-}
+// ================
+// Drums
+// ================
 
 // Kick - low freq sine wave
 const playKick = (time: number) => {
   const audioCtx = getAudioContext();
+  const destination = getDestinationNode();
   const osc = audioCtx.createOscillator();
   const gain = audioCtx.createGain();
 
   osc.connect(gain);
-  gain.connect(audioCtx.destination);
+  gain.connect(destination);
 
   osc.frequency.value = 150;
   osc.frequency.setValueAtTime(150, time);
 
-  gain.gain.setValueAtTime(1, time);
+  gain.gain.setValueAtTime(0.8, time);
   osc.frequency.exponentialRampToValueAtTime(0.001, time + 1);
   gain.gain.exponentialRampToValueAtTime(0.001, time + 1);
 
@@ -63,12 +81,13 @@ const playKick = (time: number) => {
 const playSnare = (time: number) => {
   const audioCtx = getAudioContext();
   const osc = audioCtx.createOscillator();
+  const destination = getDestinationNode();
 
   const oscGain = audioCtx.createGain();
   const oscHighPass = getFilterNode('highpass', 700)
 
   osc.connect(oscHighPass).connect(oscGain);
-  oscGain.connect(audioCtx.destination);
+  oscGain.connect(destination);
 
   osc.frequency.value = 850;
   osc.frequency.setValueAtTime(850, time);
@@ -85,7 +104,7 @@ const playSnare = (time: number) => {
   const noiseGain = audioCtx.createGain();
 
   noise.connect(noiseHighPass).connect(noiseGain);
-  noiseGain.connect(audioCtx.destination);
+  noiseGain.connect(destination);
   noiseGain.gain.setValueAtTime(0.3, time);
   noiseGain.gain.exponentialRampToValueAtTime(0.3, time + 0.05);
   noiseGain.gain.exponentialRampToValueAtTime(0.01, time + 0.1);
@@ -97,14 +116,15 @@ const playSnare = (time: number) => {
 // Hihats - high-passed short noise
 const playHihats = (time: number) => {
   const audioCtx = getAudioContext();
+  const destination = getDestinationNode();
   const noise = getNoiseAudioNode()
 
   const highPass = getFilterNode('highpass', 6000)
   const noiseGain = audioCtx.createGain();
 
   noise.connect(highPass).connect(noiseGain);
-  noiseGain.connect(audioCtx.destination);
-  noiseGain.gain.setValueAtTime(1, time);
+  noiseGain.connect(destination);
+  noiseGain.gain.setValueAtTime(0.8, time);
   noiseGain.gain.exponentialRampToValueAtTime(0.001, time + 0.2);
 
   noise.start(time);
@@ -120,11 +140,12 @@ const playNote = (frequency: number) => {
   if (notesPlaying[frequency]) return
 
   const audioCtx = getAudioContext();
+  const destination = getDestinationNode();
   const osc = audioCtx.createOscillator();
   const gain = audioCtx.createGain();
-  gain.gain.value = 0.2;
+  gain.gain.value = 0.5;
   osc.connect(gain);
-  gain.connect(audioCtx.destination);
+  gain.connect(destination);
 
   osc.frequency.value = frequency;
   osc.start();
