@@ -1,7 +1,7 @@
 .wrapper {
   display: grid;
   width: 100%;
-  height: 100%;
+  height: min-content;
   max-width: 1800px;
   color: white;
   padding: 20px;
@@ -11,7 +11,9 @@
   margin: 0 auto;
   justify-content: center;
   align-items: center;
+  align-self: center;
   text-align: center;
+  position: relative;
 }
 
 .instrument {
@@ -51,6 +53,11 @@
   background-color: rgb(198, 0, 0);
 }
 
-.wrapper input[type='checkbox']:checked:hover {
+.wrapper input[type='checkbox']:checked:hover,
+.activeStep input[type='checkbox']:checked {
   background-color: rgb(238, 15, 15);
+}
+
+.activeStep input[type='checkbox'] {
+background-color: rgba(218, 218, 218, 0.6);
 }
