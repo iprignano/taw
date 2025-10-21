@@ -1,5 +1,5 @@
 import { fill } from 'es-toolkit/array';
-import { createEffect, createSignal } from 'solid-js';
+import { createEffect, createSignal, onCleanup } from 'solid-js';
 import { createStore } from 'solid-js/store';
 
 import { getAudioContext, playSnare, playKick, playHihats } from '../../lib/audio';
@@ -18,6 +18,7 @@ export default function App() {
     hihats: fill(Array(16), false),
   };
   const [step, setStep] = createSignal(0);
+  const [bpm, setBpm] = createSignal(120);
   const [intervalId, setIntervalId] = createSignal<NodeJS.Timeout>();
   const [isPlaying, setIsPlaying] = createSignal(false);
   const [drumsStore, setDrumsStore] = createStore(initialDrumsStore);
@@ -28,7 +29,6 @@ export default function App() {
 
   createEffect(() => {
     if (!isPlaying()) {
-      clearInterval(intervalId());
       return;
     }
 
@@ -49,9 +49,18 @@ export default function App() {
       }
 
       setStep((step) => step + 1);
-    }, 250);
+    }, 60_000 / bpm() / 4);
+    // 1 minute is 60_000
+    // 60_000 / 4 gives us the interval between quarter notes
+    // we divide by 4 because we want 16th notes
 
     setIntervalId(interval);
+
+    // Clean up any running timer when the BPM
+    // changes or the playback is stopped
+    onCleanup(() => {
+      clearInterval(intervalId());
+    });
   });
 
   return (
@@ -78,7 +87,12 @@ export default function App() {
         </div>
       </div>
 
-      <Footer onPlayStateChange={() => setIsPlaying((prev) => !prev)} isPlaying={isPlaying()} />
+      <Footer
+        bpm={bpm()}
+        onBpmChange={(newBpm) => setBpm(newBpm)}
+        onPlayStateChange={() => setIsPlaying((prev) => !prev)}
+        isPlaying={isPlaying()}
+      />
     </div>
   );
 }

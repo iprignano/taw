@@ -10,6 +10,64 @@
   align-self: end;
 }
 
+.tempo {
+  display: flex;
+  align-items: stretch;
+  position: relative;
+  padding-left: 30px;
+  margin-left: 10px;
+}
+
+.tempo label {
+  position: absolute;
+  top: 14px;
+  left: 0px;
+  transform: rotate(-90deg);
+  display: block;
+  align-self: center;
+  height: min-content;
+  font-size: 11px;
+  letter-spacing: 3px;
+  opacity: 0.4;
+}
+
+.tempo button {
+  font-size: 20px;
+  padding: 5px 10px;
+  background-color: rgb(70, 70, 70);
+  color: rgb(152, 152, 152);
+  transition: background-color 100ms ease;
+}
+
+.tempo button:not([disabled]):hover {
+  cursor: pointer;
+  background-color: rgb(84, 84, 84);
+}
+
+.tempo button[disabled] {
+  opacity: 0.2;
+}
+
+.minus {
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+
+.plus {
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+
+.tempo input {
+  width: 80px;
+  appearance: none;
+  padding: 10px 15px;
+  background-color: rgb(35, 35, 35);
+  color: white;
+  border: none;
+  text-align: center;
+}
+
 .playToggle {
   padding: 15px 20px;
   text-transform: uppercase;
