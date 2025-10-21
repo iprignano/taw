@@ -132,8 +132,8 @@ export default function Keyboard() {
   return (
     <div class={styles.wrapper}>
       <div class={`${styles.ctrls} monospace`}>
-        <div>
-          <span>wave</span>
+        <div class={styles.wavePicker}>
+          <span class={styles.ctrlTitle}>wave</span>
           <input
             type="range"
             id="waves"
@@ -151,6 +151,19 @@ export default function Keyboard() {
               return <option value={index} label={label}></option>;
             })}
           </datalist>
+        </div>
+
+        <div class={styles.octavePicker}>
+          <span class={styles.ctrlTitle}>octave</span>
+          <div class={styles.octaveSelector}>
+            <button class="monospace" onClick={() => lowerOctave()}>
+              -
+            </button>
+            <div class={`${styles.currentOctave} doto`}>{currentOctave()}</div>
+            <button class="monospace" onClick={() => increaseOctave()}>
+              +
+            </button>
+          </div>
         </div>
       </div>
       <div class={styles.keys}>
