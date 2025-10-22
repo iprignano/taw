@@ -67,12 +67,16 @@ export default function Keyboard() {
 
   const lowerOctave = () => {
     if (currentOctave() === 0) return;
+
     setCurrentOctave(currentOctave() - 1);
+    notesPlaying().forEach((note) => releaseNote(note));
     setNotes(notes().map(({ note, freq }) => ({ note, freq: freq / 2 })));
   };
   const increaseOctave = () => {
     if (currentOctave() === 4) return;
+
     setCurrentOctave(currentOctave() + 1);
+    notesPlaying().forEach((note) => releaseNote(note));
     setNotes(notes().map(({ note, freq }) => ({ note, freq: freq * 2 })));
   };
   const playNote = (note: number) => {
@@ -93,6 +97,8 @@ export default function Keyboard() {
   const keypressHandler = (evt: KeyboardEvent) => {
     const noteKey = keyMap[evt.key];
 
+    // Don't intercept the event if there's
+    // a meta key pressed (e.g. ctrl-t, cmd-l, etc)
     if (evt.metaKey) return;
 
     if (evt.type === 'keydown' && evt.key === 'z') {
