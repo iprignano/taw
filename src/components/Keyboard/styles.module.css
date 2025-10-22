@@ -17,7 +17,7 @@
   display: flex;
   justify-content: space-between;
   background-color: rgb(156, 0, 0);
-  width: calc(var(--keys-width) * 15);
+  width: calc(var(--keys-width) * 16);
   height: 260px;
   flex-shrink: 0;
   border-radius: 10px;
@@ -101,7 +101,7 @@
 }
 
 .octavePicker {
-  width: 120px;
+  width: 150px;
 }
 
 .octaveSelector {
@@ -128,7 +128,6 @@
 
 .currentOctave {
   font-size: 23px;
-  width: 65px;
   flex-shrink: 0;
   text-align: center;
   background: rgb(27, 27, 27);

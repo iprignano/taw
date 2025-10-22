@@ -5,50 +5,51 @@ import { playNote as playAudioNote, releaseNote as releaseAudioNote } from '../.
 import styles from './styles.module.css';
 
 const initialNotes = [
-  { note: '1C', freq: 130.8 },
-  { note: '1C#', freq: 138.56 },
-  { note: '1D', freq: 146.8 },
-  { note: '1D#', freq: 155.56 },
-  { note: '1E', freq: 164.8 },
-  { note: '1F', freq: 174.6 },
-  { note: '1F#', freq: 184.96 },
-  { note: '1G', freq: 195.96 },
-  { note: '1G#', freq: 207.64 },
-  { note: '1A', freq: 220 },
-  { note: '1A#', freq: 233.08 },
-  { note: '1B', freq: 246.92 },
-  { note: '2C', freq: 261.6 },
-  { note: '2C#', freq: 277.12 },
-  { note: '2D', freq: 293.6 },
-  { note: '2D#', freq: 311.12 },
-  { note: '2E', freq: 329.6 },
-  { note: '2F', freq: 349.2 },
-  { note: '2F#', freq: 369.92 },
-  { note: '2G', freq: 391.92 },
-  { note: '2G#', freq: 415.28 },
-  { note: '2A', freq: 440 },
-  { note: '2A#', freq: 466.16 },
-  { note: '2B', freq: 493.84 },
+  { note: '3C', freq: 130.8 },
+  { note: '3C#', freq: 138.56 },
+  { note: '3D', freq: 146.8 },
+  { note: '3D#', freq: 155.56 },
+  { note: '3E', freq: 164.8 },
+  { note: '3F', freq: 174.6 },
+  { note: '3F#', freq: 184.96 },
+  { note: '3G', freq: 195.96 },
+  { note: '3G#', freq: 207.64 },
+  { note: '3A', freq: 220 },
+  { note: '3A#', freq: 233.08 },
+  { note: '3B', freq: 246.92 },
+  { note: '4C', freq: 261.6 }, // "middle C"
+  { note: '4C#', freq: 277.12 },
+  { note: '4D', freq: 293.6 },
+  { note: '4D#', freq: 311.12 },
+  { note: '4E', freq: 329.6 },
+  { note: '4F', freq: 349.2 },
+  { note: '4F#', freq: 369.92 },
+  { note: '4G', freq: 391.92 },
+  { note: '4G#', freq: 415.28 },
+  { note: '4A', freq: 440 },
+  { note: '4A#', freq: 466.16 },
+  { note: '4B', freq: 493.84 },
+  { note: '5C', freq: 523.25 },
 ];
 
 // Using Ableton's keyboard mapping
 // because that's what I'm used to
 const keyMap: Record<string, string> = {
-  a: '1C',
-  w: '1C#',
-  s: '1D',
-  e: '1D#',
-  d: '1E',
-  f: '1F',
-  t: '1F#',
-  g: '1G',
-  y: '1G#',
-  h: '1A',
-  u: '1A#',
-  j: '1B',
-  k: '2C',
-  o: '2C#',
-  l: '2D',
+  a: '3C',
+  w: '3C#',
+  s: '3D',
+  e: '3D#',
+  d: '3E',
+  f: '3F',
+  t: '3F#',
+  g: '3G',
+  y: '3G#',
+  h: '3A',
+  u: '3A#',
+  j: '3B',
+  k: '4C',
+  o: '4C#',
+  l: '4D',
 };
 
 const oscTypes: { wave: OscillatorType; label: string }[] = [
@@ -60,20 +61,20 @@ const oscTypes: { wave: OscillatorType; label: string }[] = [
 
 export default function Keyboard() {
   const [isPressedDown, setIsPressedDown] = createSignal(false);
-  const [currentOctave, setCurrentOctave] = createSignal(2);
+  const [currentOctave, setCurrentOctave] = createSignal(3);
   const [oscWaveIndex, setOscWaveIndex] = createSignal(0);
   const [notesPlaying, setNotesPlaying] = createSignal<number[]>([]);
   const [notes, setNotes] = createSignal(initialNotes);
 
   const lowerOctave = () => {
-    if (currentOctave() === 0) return;
+    if (currentOctave() === 2) return;
 
     setCurrentOctave(currentOctave() - 1);
     notesPlaying().forEach((note) => releaseNote(note));
     setNotes(notes().map(({ note, freq }) => ({ note, freq: freq / 2 })));
   };
   const increaseOctave = () => {
-    if (currentOctave() === 4) return;
+    if (currentOctave() === 5) return;
 
     setCurrentOctave(currentOctave() + 1);
     notesPlaying().forEach((note) => releaseNote(note));
@@ -165,7 +166,9 @@ export default function Keyboard() {
             <button class="monospace" onClick={() => lowerOctave()}>
               -
             </button>
-            <div class={`${styles.currentOctave} doto`}>{currentOctave()}</div>
+            <div class={`${styles.currentOctave} doto`}>
+              {currentOctave()}-{currentOctave() + 1}
+            </div>
             <button class="monospace" onClick={() => increaseOctave()}>
               +
             </button>
