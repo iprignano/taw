@@ -1,8 +1,8 @@
+import { difference, union } from 'es-toolkit';
 import { createSignal, onMount } from 'solid-js';
 
-import styles from './styles.module.css';
 import { playNote as playAudioNote, releaseNote as releaseAudioNote } from '../../lib/audio';
-import { difference, union } from 'es-toolkit';
+import styles from './styles.module.css';
 
 const initialNotes = [
   { note: '1C', freq: 130.8 },

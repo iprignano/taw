@@ -2,7 +2,7 @@ import { createSignal } from 'solid-js';
 
 import Header from '../Header/Header';
 import DrumsSequencer from '../DrumsSequencer/DrumsSequencer';
-import Keyboard from '../Keyboard/Keyboard';
+import Synth from '../Synth/Synth';
 import Footer from '../Footer/Footer';
 
 import styles from './styles.module.css';
@@ -26,7 +26,7 @@ export default function App() {
           <div class={styles.title}>
             <span class="monospace">keyboard</span>
           </div>
-          <Keyboard />
+          <Synth />
         </div>
       </div>
 

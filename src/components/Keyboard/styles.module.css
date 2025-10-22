@@ -1,5 +1,6 @@
 .wrapper {
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -135,6 +136,7 @@
   border-radius: 4px;
   color: rgb(0, 173, 0);
   text-shadow: 0 2px 0 black;
+  -webkit-font-smoothing: none;
 }
 
 .keys {
