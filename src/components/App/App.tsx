@@ -10,6 +10,7 @@ import styles from './styles.module.css';
 export default function App() {
   const [bpm, setBpm] = createSignal(120);
   const [isPlaying, setIsPlaying] = createSignal(false);
+  const [isSequencingKeys, setIsSequencingKeys] = createSignal(false);
 
   return (
     <div class={styles.wrapper}>
@@ -26,12 +27,14 @@ export default function App() {
           <div class={styles.title}>
             <span class="monospace">keyboard</span>
           </div>
-          <Synth />
+          <Synth isSequencing={isSequencingKeys()} />
         </div>
       </div>
 
       <Footer
         bpm={bpm()}
+        isSequencingKeys={isSequencingKeys()}
+        onSequencingKeysChange={setIsSequencingKeys}
         onBpmChange={(newBpm) => setBpm(newBpm)}
         onPlayStateChange={() => setIsPlaying((prev) => !prev)}
         isPlaying={isPlaying()}

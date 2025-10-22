@@ -16,11 +16,19 @@ export default function Footer(props: {
   onBpmChange(newBpm: number): void;
   isPlaying: boolean;
   onPlayStateChange(): void;
+  isSequencingKeys: boolean;
+  onSequencingKeysChange(isSequencing: boolean): void;
 }) {
   return (
     <footer class={`${styles.footer} monospace`}>
       <div class={styles.tempo}>
         <BpmInput bpm={props.bpm} onBpmChange={props.onBpmChange} />
+      </div>
+      <div class={styles.synthSwitch}>
+        <input
+          type="checkbox"
+          onChange={(evt) => props.onSequencingKeysChange(evt.target.checked)}
+        />
       </div>
       <button class={`${styles.playToggle} monospace`} onClick={props.onPlayStateChange}>
         {props.isPlaying ? 'Pause' : 'Play'}

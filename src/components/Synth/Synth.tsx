@@ -5,16 +5,14 @@ import SynthSequencer from '../SynthSequencer/SynthSequencer';
 
 import styles from './styles.module.css';
 
-export default function Synth() {
-  const [isSequencing, setIsSequencing] = createSignal(false);
-
+export default function Synth(props: { isSequencing: boolean }) {
   return (
     <div class={styles.wrapper}>
       <Switch>
-        <Match when={isSequencing()}>
+        <Match when={props.isSequencing}>
           <SynthSequencer />
         </Match>
-        <Match when={!isSequencing()}>
+        <Match when={!props.isSequencing}>
           <Keyboard />
         </Match>
       </Switch>
