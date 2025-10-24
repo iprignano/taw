@@ -1,10 +1,15 @@
+import { useContext } from 'solid-js';
 import styles from './styles.module.css';
+
+import { AppContext } from '../AppContext/AppContext';
 
 const minBpm = 60;
 const maxBpm = 240;
 
-export default function BpmInput(props: { bpm: number; onBpmChange(newBpm: number): void }) {
+export default function BpmInput() {
+  const context = useContext(AppContext);
   let tempoInputRef: HTMLInputElement;
+
   return (
     <>
       <label for="bpm" id="bpmLabel" class={styles.bpm}>
@@ -12,9 +17,9 @@ export default function BpmInput(props: { bpm: number; onBpmChange(newBpm: numbe
       </label>
       <button
         aria-label="Decrease BPM"
-        disabled={props.bpm === minBpm}
+        disabled={context?.bpm() === minBpm}
         class={styles.minus}
-        onClick={() => props.onBpmChange(Math.max(props.bpm - 1, minBpm))}
+        onClick={() => context?.setBpm((bpm) => Math.max(bpm - 1, minBpm))}
       >
         -
       </button>
@@ -25,24 +30,24 @@ export default function BpmInput(props: { bpm: number; onBpmChange(newBpm: numbe
         aria-labelledby="bpmLabel"
         inputmode="numeric"
         pattern="[0-9]+"
-        value={props.bpm}
+        value={context?.bpm()}
         onChange={(evt) => {
           const newBpm = Number(evt.target.value);
 
           // Do nothing if the value is not in range
           if (newBpm < minBpm || newBpm > maxBpm || Number.isNaN(newBpm)) {
-            tempoInputRef.value = String(props.bpm);
+            tempoInputRef.value = String(context?.bpm);
             return;
           }
 
-          props.onBpmChange(newBpm);
+          context?.setBpm(() => newBpm);
         }}
       />
       <button
         aria-label="Increase BPM"
-        disabled={props.bpm === maxBpm}
+        disabled={context?.bpm() === maxBpm}
         class={styles.plus}
-        onClick={() => props.onBpmChange(Math.min(props.bpm + 1, maxBpm))}
+        onClick={() => context?.setBpm((bpm) => Math.min(bpm + 1, maxBpm))}
       >
         +
       </button>

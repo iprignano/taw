@@ -1,18 +1,21 @@
-import { Switch, Match, createSignal } from 'solid-js';
+import { Switch, Match, useContext } from 'solid-js';
 
+import { AppContext } from '../AppContext/AppContext';
 import Keyboard from '../Keyboard/Keyboard';
 import SynthSequencer from '../SynthSequencer/SynthSequencer';
 
 import styles from './styles.module.css';
 
-export default function Synth(props: { isSequencing: boolean; isPlaying: boolean; bpm: number }) {
+export default function Synth() {
+  const context = useContext(AppContext);
+
   return (
     <div class={styles.wrapper}>
       <Switch>
-        <Match when={props.isSequencing}>
-          <SynthSequencer isPlaying={props.isPlaying} bpm={props.bpm} />
+        <Match when={context?.isSequencingKeys()}>
+          <SynthSequencer />
         </Match>
-        <Match when={!props.isSequencing}>
+        <Match when={!context?.isSequencingKeys()}>
           <Keyboard />
         </Match>
       </Switch>

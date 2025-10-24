@@ -1,5 +1,7 @@
-import { createEffect, createSignal, onCleanup } from 'solid-js';
+import { createEffect, createSignal, onCleanup, useContext } from 'solid-js';
 import { createStore } from 'solid-js/store';
+
+import { AppContext } from '../AppContext/AppContext';
 import { getAudioContext, playNote } from '../../lib/audio';
 
 import styles from './styles.module.css';
@@ -37,7 +39,8 @@ const STEPS_ARRAY = Array.from({ length: STEPS_LENGHT }, (_, i) => i + 1);
 
 type Store = Record<number, { freq?: number; length?: number }[]>;
 
-export default function SynthSequencer(props: { isPlaying: boolean; bpm: number }) {
+export default function SynthSequencer() {
+  const context = useContext(AppContext);
   const [currentStep, setCurrentStep] = createSignal(0);
   const [intervalId, setIntervalId] = createSignal<NodeJS.Timeout>();
   const [notesStore, setNotesStore] = createStore<Store>(
@@ -56,7 +59,7 @@ export default function SynthSequencer(props: { isPlaying: boolean; bpm: number 
   };
 
   createEffect(() => {
-    if (!props.isPlaying) {
+    if (!context?.isPlaying()) {
       return;
     }
 
@@ -78,7 +81,7 @@ export default function SynthSequencer(props: { isPlaying: boolean; bpm: number 
       }
 
       setCurrentStep((step) => step + 1);
-    }, 60_000 / props.bpm / 8);
+    }, 60_000 / context?.bpm() / 8);
     // 1 minute is 60_000ms
     // 60_000 / 8 gives us the interval between 32th notes
 

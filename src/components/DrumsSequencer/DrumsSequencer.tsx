@@ -1,9 +1,10 @@
-import styles from './styles.module.css';
 import { fill } from 'es-toolkit/array';
-import { createEffect, createSignal, onCleanup } from 'solid-js';
+import { createEffect, createSignal, onCleanup, useContext } from 'solid-js';
 import { createStore } from 'solid-js/store';
 
+import { AppContext } from '../AppContext/AppContext';
 import { getAudioContext, playSnare, playKick, playHihats } from '../../lib/audio';
+import styles from './styles.module.css';
 
 const STEPS_LENGHT = 16;
 const STEPS_ARRAY = Array.from({ length: STEPS_LENGHT }, (_, i) => i + 1);
@@ -12,7 +13,8 @@ const INSTRUMENTS = ['kick', 'snare', 'hihats'] as const;
 type Instrument = (typeof INSTRUMENTS)[number];
 type OnStepToggle = (instrument: Instrument, step: number, isChecked: boolean) => void;
 
-export default function DrumsSequencer(props: { bpm: number; isPlaying: boolean }) {
+export default function DrumsSequencer() {
+  const context = useContext(AppContext);
   const initialDrumsStore = {
     kick: fill(Array(16), false),
     snare: fill(Array(16), false),
@@ -27,7 +29,7 @@ export default function DrumsSequencer(props: { bpm: number; isPlaying: boolean 
   };
 
   createEffect(() => {
-    if (!props.isPlaying) {
+    if (!context?.isPlaying()) {
       return;
     }
 
@@ -52,7 +54,7 @@ export default function DrumsSequencer(props: { bpm: number; isPlaying: boolean 
       }
 
       setCurrentStep((step) => step + 1);
-    }, 60_000 / props.bpm / 4);
+    }, 60_000 / context.bpm() / 4);
     // 1 minute is 60_000ms
     // 60_000 / 4 gives us the interval between quarter notes
     // we divide by 4 because we want 16th notes
@@ -78,7 +80,9 @@ export default function DrumsSequencer(props: { bpm: number; isPlaying: boolean 
         <>
           <div class={styles.instrument}>{instrument}</div>
           {STEPS_ARRAY.map((step) => (
-            <div classList={{ [styles.activeStep]: props.isPlaying && step === currentStep() }}>
+            <div
+              classList={{ [styles.activeStep]: context?.isPlaying() && step === currentStep() }}
+            >
               <input
                 type="checkbox"
                 checked={drumsStore?.[instrument][step]}

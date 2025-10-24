@@ -1,5 +1,7 @@
+import { useContext } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
 
+import { AppContext } from '../AppContext/AppContext';
 import { Play } from '../Icon/Play';
 import { Pause } from '../Icon/Pause';
 import BpmInput from './BpmInput';
@@ -11,28 +13,26 @@ const options = {
   pause: Pause,
 };
 
-export default function Footer(props: {
-  bpm: number;
-  onBpmChange(newBpm: number): void;
-  isPlaying: boolean;
-  onPlayStateChange(): void;
-  isSequencingKeys: boolean;
-  onSequencingKeysChange(isSequencing: boolean): void;
-}) {
+export default function Footer() {
+  const context = useContext(AppContext);
+
   return (
     <footer class={`${styles.footer} monospace`}>
       <div class={styles.tempo}>
-        <BpmInput bpm={props.bpm} onBpmChange={props.onBpmChange} />
+        <BpmInput />
       </div>
       <div class={styles.synthSwitch}>
         <input
           type="checkbox"
-          onChange={(evt) => props.onSequencingKeysChange(evt.target.checked)}
+          onChange={(evt) => context?.setIsSequencingKeys(evt.target.checked)}
         />
       </div>
-      <button class={`${styles.playToggle} monospace`} onClick={props.onPlayStateChange}>
-        {props.isPlaying ? 'Pause' : 'Play'}
-        <Dynamic component={options[props.isPlaying ? 'pause' : 'play']} fill="white" />
+      <button
+        class={`${styles.playToggle} monospace`}
+        onClick={() => context?.setIsPlaying((isPlaying) => !isPlaying)}
+      >
+        {context?.isPlaying() ? 'Pause' : 'Play'}
+        <Dynamic component={options[context?.isPlaying() ? 'pause' : 'play']} fill="white" />
       </button>
     </footer>
   );
