@@ -16,7 +16,7 @@ const getCompressorNode = (): DynamicsCompressorNode => {
 
   const audioCtx = getAudioContext();
   compressor = audioCtx.createDynamicsCompressor();
-  compressor.threshold.setValueAtTime(-0, audioCtx.currentTime);
+  compressor.threshold.setValueAtTime(0, audioCtx.currentTime);
   compressor.knee.setValueAtTime(30, audioCtx.currentTime);
   compressor.ratio.setValueAtTime(10, audioCtx.currentTime);
   compressor.attack.setValueAtTime(0.02, audioCtx.currentTime);
