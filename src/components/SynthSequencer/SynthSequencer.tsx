@@ -1,8 +1,6 @@
-import { createEffect, createSignal, onCleanup, useContext } from 'solid-js';
-import { createStore } from 'solid-js/store';
+import { useContext } from 'solid-js';
 
 import { AppContext } from '../AppContext/AppContext';
-import { getAudioContext, playNote } from '../../lib/audio';
 
 import styles from './styles.module.css';
 
@@ -37,62 +35,16 @@ const allNotes = (() => {
 const STEPS_LENGHT = 32;
 const STEPS_ARRAY = Array.from({ length: STEPS_LENGHT }, (_, i) => i + 1);
 
-type Store = Record<number, { freq?: number; length?: number }[]>;
-
 export default function SynthSequencer() {
   const context = useContext(AppContext);
-  const [currentStep, setCurrentStep] = createSignal(0);
-  const [intervalId, setIntervalId] = createSignal<NodeJS.Timeout>();
-  const [notesStore, setNotesStore] = createStore<Store>(
-    STEPS_ARRAY.reduce((acc, val) => {
-      acc[val] = [];
-      return acc;
-    }, {} as Store),
-  );
 
   const toggleNote = ({ step, freq }: { step: number; freq: number }) => {
-    if (notesStore[step].find((n) => n.freq === freq)) {
-      setNotesStore(step, (n) => n.filter(({ freq: f }) => f !== freq));
+    if (context?.keys[step].find((n) => n.freq === freq)) {
+      context?.setKeys(step, (n) => n.filter(({ freq: f }) => f !== freq));
     } else {
-      setNotesStore(step, notesStore[step].length, { freq, length: 1 });
+      context?.setKeys(step, context?.keys[step].length, { freq, length: 1 });
     }
   };
-
-  createEffect(() => {
-    if (!context?.isPlaying()) {
-      return;
-    }
-
-    const interval = setInterval(() => {
-      if (currentStep() === 1) {
-        console.log('synth', performance.now());
-      }
-      if (currentStep() >= STEPS_LENGHT) {
-        setCurrentStep(0);
-      }
-
-      const time = getAudioContext().currentTime;
-      if (notesStore[currentStep()]?.length) {
-        notesStore[currentStep()].forEach((note) => {
-          if (note.freq) {
-            playNote(note.freq, 'sine', 0.1);
-          }
-        });
-      }
-
-      setCurrentStep((step) => step + 1);
-    }, 60_000 / context?.bpm() / 8);
-    // 1 minute is 60_000ms
-    // 60_000 / 8 gives us the interval between 32th notes
-
-    setIntervalId(interval);
-
-    // Clean up any running timer when the BPM
-    // changes or the playback is stopped
-    onCleanup(() => {
-      clearInterval(intervalId());
-    });
-  });
 
   return (
     <div class={styles.wrapper}>
@@ -106,8 +58,8 @@ export default function SynthSequencer() {
               </td>
               {STEPS_ARRAY.map((step) => (
                 <td onClick={() => toggleNote({ step, freq })}>
-                  {notesStore[step].find((n) => n?.freq === freq) && (
-                    <span class={step === currentStep() ? `${styles.highlight}` : ''}>
+                  {context?.keys[step].find((n) => n?.freq === freq) && (
+                    <span class={step === context?.currentStep() ? `${styles.highlight}` : ''}>
                       {note}
                       {octave}
                     </span>

@@ -4,6 +4,11 @@ import { fill } from 'es-toolkit';
 
 import { AppContext, type AppContextValue } from './AppContext';
 
+const STEPS_LENGHT = 32;
+const STEPS_ARRAY = Array.from({ length: STEPS_LENGHT }, (_, i) => i + 1);
+
+type KeysStore = Record<number, { freq?: number; length?: number }[]>;
+
 export default function AppContextProvider(props: {
   value?: AppContextValue;
   children: JSXElement;
@@ -18,9 +23,13 @@ export default function AppContextProvider(props: {
     snare: fill(Array(16), false),
     hihats: fill(Array(16), false),
   };
+  const initialKeysStore = STEPS_ARRAY.reduce((acc, val) => {
+    acc[val] = [];
+    return acc;
+  }, {} as KeysStore);
 
   const [drums, setDrums] = createStore(initialDrumsStore);
-  const [keys, setKeys] = createStore();
+  const [keys, setKeys] = createStore(initialKeysStore);
 
   const [appStore, _] = createStore({
     bpm,

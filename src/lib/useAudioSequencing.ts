@@ -1,6 +1,6 @@
 import { createEffect, createSignal, onCleanup, useContext } from 'solid-js';
 
-import { getAudioContext, playHihats, playKick, playSnare } from './audio';
+import { getAudioContext, playHihats, playKick, playNote, playSnare } from './audio';
 
 import { AppContext } from '../components/AppContext/AppContext';
 
@@ -33,6 +33,14 @@ export const useAudioSequencing = () => {
       }
       if (context?.drums.hihats[drumStep]) {
         playHihats(time);
+      }
+
+      if (context?.keys[context?.currentStep()]?.length) {
+        context?.keys[context?.currentStep()]?.forEach((note) => {
+          if (note.freq) {
+            playNote(note.freq, 'sine', 0.1);
+          }
+        });
       }
 
       context?.setCurrentStep((step) => step + 1);
