@@ -35,8 +35,9 @@
   cursor: pointer;
 }
 
-.noteTable span {
+.noteTable div {
   display: flex;
+  position: relative;
   align-items: center;
   padding: 1px 5px;
   font-family: "Geist Mono", monospace;
@@ -46,8 +47,24 @@
   height: 100%;
   background-color: rgb(255, 204, 0);
   border-radius: 3px;
+  pointer-events: none;
 }
 
-.noteTable span.highlight {
+.noteTable .noteHandle {
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 20px;
+  height: 100%;
+  background-color: green;
+  border-bottom-right-radius: 3px;
+  border-top-right-radius: 3px;
+  z-index: 1;
+  cursor: ew-resize;
+  pointer-events: all;
+}
+
+.noteTable div.highlight {
   background-color: red;
 }

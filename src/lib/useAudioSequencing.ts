@@ -40,7 +40,7 @@ export const useAudioSequencing = () => {
       if (context?.keys[context?.currentStep()]?.length) {
         context?.keys[context?.currentStep()]?.forEach((note) => {
           if (note.freq) {
-            playNote(note.freq, context?.oscWave(), 0.1);
+            playNote(note.freq, context?.oscWave(), 0.1 * (note.length ?? 1));
           }
         });
       }
