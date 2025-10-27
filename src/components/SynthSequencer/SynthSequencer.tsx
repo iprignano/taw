@@ -52,17 +52,29 @@ export default function SynthSequencer() {
     }
   };
 
-  const onNoteDragStart = (_: DragEvent, { step, freq }: { step: number; freq: number }) => {
+  const onNoteDragStart = (evt: DragEvent, { step, freq }: { step: number; freq: number }) => {
+    // Prevents cursor from going ham when dragging the note
+    if (evt.dataTransfer) evt.dataTransfer.effectAllowed = 'none';
+
     setDraggedNote({ step, freq });
   };
   const onNoteDragEnd = (_: DragEvent) => {
     setDraggedNote(null);
   };
-  const onDragOver = throttle((evt: DragEvent, { step }: { step: number }) => {
+  const onCellDragOver = throttle((evt: DragEvent, { step }: { step: number }) => {
     evt.preventDefault();
 
+    if (evt.target !== evt.currentTarget) {
+      // Ignore dragover events that originated
+      // from targets different than the table cells
+      // on which the handler is defined
+      // (namely, the note div itself)
+      return;
+    }
+
     if (step < (draggedNote()?.step ?? 0)) {
-      // Do nothing
+      // Ignore events where the user dragged the
+      // handle beyond the start of the note
       return;
     }
 
@@ -70,7 +82,7 @@ export default function SynthSequencer() {
       freq: draggedNote()?.freq,
       length: Math.max(1, step + 1 - (draggedNote()?.step ?? 0)),
     });
-  }, 200);
+  }, 100);
 
   return (
     <div class={styles.wrapper}>
@@ -91,7 +103,7 @@ export default function SynthSequencer() {
                     return (
                       <td
                         onClick={() => toggleNote({ step: step(), freq: note().freq })}
-                        onDragOver={(evt) => onDragOver(evt, { step: step() })}
+                        onDragOver={(evt) => onCellDragOver(evt, { step: step() })}
                       >
                         {matchingNote() && (
                           <div
