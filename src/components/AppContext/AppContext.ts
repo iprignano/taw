@@ -1,5 +1,8 @@
 import { createContext, type Accessor, type Setter } from 'solid-js';
-import type { Store } from 'solid-js/store';
+import type { Store, SetStoreFunction } from 'solid-js/store';
+
+type DrumsStore = Store<Record<'kick' | 'snare' | 'hihats', boolean[]>>;
+type KeysStore = Store<{}>;
 
 export type AppContextValue = Store<{
   bpm: Accessor<number>;
@@ -8,6 +11,12 @@ export type AppContextValue = Store<{
   setIsPlaying: Setter<boolean>;
   isSequencingKeys: Accessor<boolean>;
   setIsSequencingKeys: Setter<boolean>;
+  currentStep: Accessor<number>;
+  setCurrentStep: Setter<number>;
+  drums: DrumsStore;
+  setDrums: SetStoreFunction<DrumsStore>;
+  keys: KeysStore;
+  setKeys: SetStoreFunction<KeysStore>;
 }>;
 
 export const AppContext = createContext<AppContextValue>();

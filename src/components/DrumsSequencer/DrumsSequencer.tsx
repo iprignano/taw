@@ -15,64 +15,31 @@ type OnStepToggle = (instrument: Instrument, step: number, isChecked: boolean) =
 
 export default function DrumsSequencer() {
   const context = useContext(AppContext);
-  const initialDrumsStore = {
-    kick: fill(Array(16), false),
-    snare: fill(Array(16), false),
-    hihats: fill(Array(16), false),
-  };
-  const [currentStep, setCurrentStep] = createSignal(0);
-  const [intervalId, setIntervalId] = createSignal<NodeJS.Timeout>();
-  const [drumsStore, setDrumsStore] = createStore(initialDrumsStore);
 
   const onStepToggle: OnStepToggle = (instrument, step, isChecked) => {
-    setDrumsStore(instrument, step - 1, isChecked);
+    context?.setDrums(instrument, step - 1, isChecked);
   };
 
-  createEffect(() => {
-    if (!context?.isPlaying()) {
-      return;
-    }
-
-    const interval = setInterval(() => {
-      if (currentStep() === 1) {
-        console.log('synth', performance.now());
-      }
-
-      if (currentStep() >= 16) {
-        setCurrentStep(0);
-      }
-
-      const time = getAudioContext().currentTime;
-      if (drumsStore.kick.at(currentStep() + 1)) {
-        playKick(time);
-      }
-      if (drumsStore.snare.at(currentStep() + 1)) {
-        playSnare(time);
-      }
-      if (drumsStore.hihats.at(currentStep() + 1)) {
-        playHihats(time);
-      }
-
-      setCurrentStep((step) => step + 1);
-    }, 60_000 / context.bpm() / 4);
-    // 1 minute is 60_000ms
-    // 60_000 / 4 gives us the interval between quarter notes
-    // we divide by 4 because we want 16th notes
-
-    setIntervalId(interval);
-
-    // Clean up any running timer when the BPM
-    // changes or the playback is stopped
-    onCleanup(() => {
-      clearInterval(intervalId());
-    });
-  });
+  const isHiglighted = (
+    isPlaying: boolean | undefined,
+    step: number,
+    currentStep: number | undefined,
+  ) => {
+    if (!isPlaying || typeof currentStep === 'undefined') return false;
+    const eigthStep = Math.floor(currentStep / 2);
+    return isPlaying && eigthStep === step;
+  };
 
   return (
     <div class={`${styles.wrapper} monospace`}>
       <div />
       {STEPS_ARRAY.map((step) => (
-        <div classList={{ [styles.step]: true, [styles.activeStep]: step === currentStep() }}>
+        <div
+          classList={{
+            [styles.step]: true,
+            [styles.activeStep]: isHiglighted(context?.isPlaying(), step, context?.currentStep()),
+          }}
+        >
           {step}
         </div>
       ))}
@@ -81,11 +48,17 @@ export default function DrumsSequencer() {
           <div class={styles.instrument}>{instrument}</div>
           {STEPS_ARRAY.map((step) => (
             <div
-              classList={{ [styles.activeStep]: context?.isPlaying() && step === currentStep() }}
+              classList={{
+                [styles.activeStep]: isHiglighted(
+                  context?.isPlaying(),
+                  step,
+                  context?.currentStep(),
+                ),
+              }}
             >
               <input
                 type="checkbox"
-                checked={drumsStore?.[instrument][step]}
+                checked={context?.drums?.[instrument][step]}
                 onChange={(evt) => {
                   evt.preventDefault();
                   onStepToggle(instrument, step + 1, evt.target.checked);
