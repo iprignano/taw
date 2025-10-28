@@ -80,7 +80,7 @@
   border-radius: var(--border-radius);
   position: relative;
   border: 1px solid #636363;
-  box-shadow: 0 0 6px rgba(255, 255, 255, .1), 0 0 12px rgba(255, 255, 255, .1);
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.1), 0 0 12px rgba(255, 255, 255, 0.1);
 }
 
 .synthSwitch div {
@@ -114,7 +114,7 @@
   border: 2px solid #ded389;
   border-radius: var(--border-radius);
   transition: all 100ms ease-out;
-  box-shadow: inset 0 0 5px rgba(255, 245, 151, .5);
+  box-shadow: inset 0 0 5px rgba(255, 245, 151, 0.5);
 }
 
 .synthSwitch:has(input:checked)::after {
@@ -133,15 +133,28 @@
   gap: 10px;
   padding: 15px 20px;
   text-transform: uppercase;
-  background-color: rgb(101, 101, 101);
+  background: #5b00ef;
+  background: linear-gradient(0deg, #7a1dfd 0%, #b07bff 60%, #ceadff 100%);
+  background-size: 100% 200%;
+  background-position: 0 100%;
   border-radius: var(--border-radius);
   min-width: 160px;
   text-align: center;
   cursor: pointer;
   letter-spacing: 2px;
   font-size: 14px;
+  transition: all 100ms ease-in-out;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.8);
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.2), 0 2px 6px rgba(0, 0, 0, 0.1),
+    0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.playToggle svg {
+  filter: drop-shadow(0 1px 0px rgba(0, 0, 0, 0.8));
 }
 
 .playToggle:hover {
-  background-color: rgb(138, 138, 138);
+  background-position: 0 50%;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.2), 0 2px 6px rgba(0, 0, 0, 0.1),
+    0 4px 10px rgba(0, 0, 0, 0.2), 0 4px 12px rgba(0, 0, 0, 0.1), 0 6px 12px rgba(0, 0, 0, 0.1);
 }

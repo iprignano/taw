@@ -9,13 +9,6 @@
 .header .logo {
   font-size: 10px;
   padding: 10px 20px;
-  font-weight: 400;
-  font-variation-settings: "wght" 300;
+  font-variation-settings: 'wght' 300;
   transition: all 0.3s ease;
-  cursor: pointer;
-}
-
-.header .logo:hover {
-  font-variation-settings: "wght" 700;
-  letter-spacing: 0.5px;
 }
