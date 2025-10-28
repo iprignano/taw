@@ -79,12 +79,12 @@
   background-color: rgb(23, 23, 23);
   border-radius: var(--border-radius);
   position: relative;
-  border: 1px solid #636363;
-  box-shadow: 0 0 6px rgba(255, 255, 255, 0.1), 0 0 12px rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.8);
 }
 
 .synthSwitch div {
-  opacity: 0.6;
+  opacity: 0.3;
+  transition: opacity 200ms ease;
 }
 
 .synthSwitch .active {
@@ -111,10 +111,10 @@
   left: 0;
   width: 50%;
   height: 100%;
-  border: 2px solid #ded389;
+  border: 2px solid #b07bff;
   border-radius: var(--border-radius);
-  transition: all 100ms ease-out;
-  box-shadow: inset 0 0 5px rgba(255, 245, 151, 0.5);
+  transition: all 200ms ease-in-out;
+  box-shadow: inset 0 0 5px rgba(255, 88, 230, 0.3);
 }
 
 .synthSwitch:has(input:checked)::after {
