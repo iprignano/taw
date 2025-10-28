@@ -4,6 +4,8 @@ import { Dynamic } from 'solid-js/web';
 import { AppContext } from '../AppContext/AppContext';
 import { Play } from '../Icon/Play';
 import { Pause } from '../Icon/Pause';
+import { Keys } from '../Icon/Keys';
+import { Grid } from '../Icon/Grid';
 import BpmInput from './BpmInput';
 
 import styles from './styles.module.css';
@@ -26,6 +28,12 @@ export default function Footer() {
           type="checkbox"
           onChange={(evt) => context?.setIsSequencingKeys(evt.target.checked)}
         />
+        <div classList={{ [styles.active]: !context?.isSequencingKeys() }}>
+          <Keys />
+        </div>
+        <div classList={{ [styles.active]: context?.isSequencingKeys() }}>
+          <Grid />
+        </div>
       </div>
       <button
         class={`${styles.playToggle} monospace`}
