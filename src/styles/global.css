@@ -1,11 +1,15 @@
+:root {
+  --primary-accent-color: #ffb11f;
+}
+
 body {
   font-family: Arial, Helvetica, sans-serif;
   font-optical-sizing: auto;
   background-color: rgb(40, 40, 40);
   height: 100vh;
-  scrollbar-color: #ffb11f transparent;
   font-family: 'Space Grotesk', sans-serif;
   font-style: normal;
+  scrollbar-color: var(--primary-accent-color) transparent;
 }
 
 .grotesk {

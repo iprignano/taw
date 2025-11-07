@@ -1,0 +1,58 @@
+.button {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-family: 'Geist Mono', monospace;
+  font-weight: 600;
+  border-radius: 5px;
+  border: 2px solid;
+  padding: 8px 20px;
+  cursor: pointer;
+  font-size: 15px;
+  text-transform: uppercase;
+  transition: background-color 150ms ease;
+
+  --primary-color: var(--primary-accent-color);
+  --alternate-color: #c5c5c5;
+  --red-color: #e73636;
+}
+
+.button:hover {
+  transition: background-color 80ms ease;
+}
+
+.primary {
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.primary:hover,
+.primary:focus {
+  outline: 0;
+  color: #ffc423;
+  background-color: rgba(222, 170, 0, 0.3);
+}
+
+.alternate {
+  color: var(--alternate-color);
+  border-color: var(--alternate-color);
+}
+
+.alternate:hover,
+.alternate:focus {
+  outline: 0;
+  color: white;
+  background-color: rgba(167, 167, 167, 0.3);
+}
+
+.red {
+  color: var(--red-color);
+  border-color: var(--red-color);
+}
+
+.red:hover,
+.red:focus {
+  outline: 0;
+  color: #ff1717;
+  background-color: rgba(190, 22, 22, 0.3);
+}
