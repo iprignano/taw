@@ -10,6 +10,18 @@
   --keys-height: 150px;
 }
 
+.mobileNotice {
+  color: #a5a5a5;
+  font-size: 12px;
+  padding: 20px;
+  text-align: center;
+}
+
+.ctrls,
+.keys {
+  display: none;
+}
+
 .logo {
   position: absolute;
   top: 65px;
@@ -33,7 +45,6 @@
   padding: 20px;
   padding-bottom: 150px;
   margin-top: 150px;
-  display: flex;
   justify-content: flex-start;
   gap: 40px;
   background-color: #9c0000;
@@ -160,7 +171,6 @@
 .keys {
   position: relative;
   top: -150px;
-  display: flex;
   justify-content: center;
   gap: 2px;
   background-color: rgba(0, 0, 0, 0.6);
@@ -191,4 +201,15 @@
 
 .highlighted {
   background-color: #b3b3b3;
+}
+
+@media screen and (min-width: 900px) {
+  .ctrls,
+  .keys {
+    display: flex;
+  }
+
+  .mobileNotice {
+    display: none;
+  }
 }

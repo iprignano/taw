@@ -3,6 +3,7 @@ body {
   font-optical-sizing: auto;
   background-color: rgb(40, 40, 40);
   height: 100vh;
+  scrollbar-color: #ffb11f transparent;
 }
 
 .grotesk {
