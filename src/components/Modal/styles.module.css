@@ -9,6 +9,7 @@
 }
 
 .modal {
+  position: relative;
   width: 100%;
   max-width: 560px;
   background-color: #2e2e2e;
@@ -16,4 +17,16 @@
   border-radius: 8px;
   overflow: hidden;
   z-index: 21;
+}
+
+.closeButton {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+.closeButton:hover {
+  opacity: 1;
 }
