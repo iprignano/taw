@@ -1,7 +1,7 @@
 import { random } from 'es-toolkit';
 import { createSignal, useContext } from 'solid-js';
 import { AppContext } from '../AppContext/AppContext';
-import { serializeSong, type DeserializedSong } from '../../lib/songSerialization';
+import { type DeserializedSong } from '../../lib/songSerialization';
 import Modal from '../Modal/Modal';
 import Button from '../Button/Button';
 import TextInput from '../TextInput/TextInput';
@@ -32,12 +32,9 @@ export default function SaveSongModal(props: { onClose(): void }) {
       name: songName(),
       drums: context?.drums,
       keys: context?.keys,
-    };
-    // Spicy conversion to turn the Solid proxies
-    // back into plain JavaScript objects
-    song = JSON.parse(JSON.stringify(song));
+    } as DeserializedSong;
 
-    const success = saveSong(song.name, serializeSong(song as DeserializedSong));
+    const success = saveSong(song);
 
     if (success) {
       setHasSaved(true);
@@ -63,7 +60,9 @@ export default function SaveSongModal(props: { onClose(): void }) {
             placeholder={`e.g. ${placeholderSongs.at(random(placeholderSongs.length))}`}
           />
 
-          {true && <div class={styles.error}>There was a problem saving your song. Try later.</div>}
+          {hasError() && (
+            <div class={styles.error}>There was a problem saving your song. Try later.</div>
+          )}
 
           <div class={styles.actions}>
             <Button variant="alternate" onClick={() => props.onClose()}>

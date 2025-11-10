@@ -22,7 +22,7 @@ export type DeserializedSong = {
   };
 };
 
-export const serializeSong = (song: DeserializedSong) => {
+export const serializeSong = (song: DeserializedSong): SerializedSong => {
   // we convert booleans to bits to save storage space:
   // this data will be stringified before being saved
   const serializeDrumSequence = (sequence: boolean[]) => sequence.map((bool) => (bool ? 1 : 0));
@@ -40,5 +40,26 @@ export const serializeSong = (song: DeserializedSong) => {
       h: serializeDrumSequence(song.drums.hihats),
     },
     k: serializeKeysSequence(song.keys),
+  };
+};
+
+export const deserializeSong = (song: SerializedSong): DeserializedSong => {
+  const deserializeDrumSequence = (sequence: Array<0 | 1>) => sequence.map((bit) => Boolean(bit));
+  const deserializeKeysSequence = (sequence: SerializedSong['k']) =>
+    Object.entries(sequence).reduce((acc, [step, notes]) => {
+      acc[Number(step)] = notes.map(([freq, length]) => ({ freq: freq, length: length }));
+      return acc;
+    }, {} as DeserializedSong['keys']);
+
+  console.log(song);
+
+  return {
+    name: song.n,
+    drums: {
+      kick: deserializeDrumSequence(song.d.k),
+      snare: deserializeDrumSequence(song.d.s),
+      hihats: deserializeDrumSequence(song.d.h),
+    },
+    keys: deserializeKeysSequence(song.k),
   };
 };

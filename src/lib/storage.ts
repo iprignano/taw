@@ -1,4 +1,9 @@
-import type { SerializedSong } from './songSerialization';
+import {
+  deserializeSong,
+  serializeSong,
+  type DeserializedSong,
+  type SerializedSong,
+} from './songSerialization';
 
 const STORAGE_KEY = 'taw_v0';
 
@@ -9,7 +14,7 @@ export const getSavedSongs = () => {
     const storage = localStorage.getItem(STORAGE_KEY);
     if (storage) {
       const parsedStorage: TawStorage = JSON.parse(storage);
-      return parsedStorage.songs;
+      return parsedStorage.songs.map(deserializeSong);
     }
     return null;
   } catch (err) {
@@ -18,10 +23,14 @@ export const getSavedSongs = () => {
   }
 };
 
-export const saveSong = (name: string, serializedSong: Omit<SerializedSong, 'n'>) => {
+export const saveSong = (song: DeserializedSong) => {
   try {
     const savedSongs = getSavedSongs();
-    const newSong = { n: name, ...serializedSong };
+
+    // Spicy conversion to turn the Solid proxies
+    // back into plain JavaScript objects
+    const plainSong: DeserializedSong = JSON.parse(JSON.stringify(song));
+    const newSong = serializeSong(plainSong);
 
     if (!savedSongs) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify({ songs: [newSong] }));
