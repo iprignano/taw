@@ -1,16 +1,7 @@
+import type { SerializedSong } from './songSerialization';
+
 const STORAGE_KEY = 'taw_v0';
 
-type SerializedSong = {
-  n: string;
-  d: {
-    k: boolean[];
-    s: boolean[];
-    h: boolean[];
-  };
-  k: {
-    [step: number]: [freq: number, length: number][];
-  };
-};
 type TawStorage = { songs: SerializedSong[] };
 
 export const getSavedSongs = () => {
