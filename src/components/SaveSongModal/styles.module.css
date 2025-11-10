@@ -1,0 +1,14 @@
+.wrapper {
+  padding: 40px;
+}
+
+.wrapper form {
+  margin-top: 20px;
+}
+
+.actions {
+  display: flex;
+  gap: 30px;
+  justify-content: space-between;
+  padding-top: 40px;
+}
