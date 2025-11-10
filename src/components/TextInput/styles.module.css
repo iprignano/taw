@@ -4,7 +4,7 @@
 }
 
 .wrapper label {
-  font-family: 'Geist Mono', monospace;
+  font-family: var(--mono-font-family);
   font-size: 10px;
   font-weight: 500;
   margin-bottom: 3px;

@@ -1,5 +1,6 @@
 :root {
   --primary-accent-color: #ffb11f;
+  --mono-font-family: 'Geist Mono', monospace;
 }
 
 body {
@@ -18,7 +19,7 @@ body {
 }
 
 .monospace {
-  font-family: 'Geist Mono', monospace;
+  font-family: var(--mono-font-family);
   font-style: normal;
 }
 
