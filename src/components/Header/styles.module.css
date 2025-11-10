@@ -6,12 +6,15 @@
   color: white;
 }
 
-.header .logo {
+.button {
+  font-family: var(--mono-font-family);
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 12px;
   padding: 10px 20px;
 }
 
-.logo h1 {
-  font-size: 17px;
-  font-weight: 300;
-  color: #a7a7a7;
+.button:hover {
+  background: black;
+  color: var(--primary-accent-color);
 }
