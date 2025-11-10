@@ -2,12 +2,11 @@
   display: flex;
   gap: 8px;
   align-items: center;
-  font-family: 'Geist Mono', monospace;
+  font-family: var(--mono-font-family);
   font-weight: 600;
   border-radius: 5px;
   border: 2px solid;
   padding: 8px 20px;
-  cursor: pointer;
   font-size: 15px;
   text-transform: uppercase;
   transition: background-color 150ms ease;
@@ -21,13 +20,17 @@
   transition: background-color 80ms ease;
 }
 
+.button:disabled {
+  opacity: 0.4;
+}
+
 .primary {
   color: var(--primary-color);
   border-color: var(--primary-color);
 }
 
-.primary:hover,
-.primary:focus {
+.primary:not(:disabled):hover,
+.primary:not(:disabled):focus {
   outline: 0;
   color: #ffc423;
   background-color: rgba(222, 170, 0, 0.3);
@@ -38,8 +41,8 @@
   border-color: var(--alternate-color);
 }
 
-.alternate:hover,
-.alternate:focus {
+.alternate:not(:disabled):hover,
+.alternate:not(:disabled):focus {
   outline: 0;
   color: white;
   background-color: rgba(167, 167, 167, 0.3);
@@ -50,8 +53,8 @@
   border-color: var(--red-color);
 }
 
-.red:hover,
-.red:focus {
+.red:not(:disabled):hover,
+.red:not(:disabled):focus {
   outline: 0;
   color: #ff1717;
   background-color: rgba(190, 22, 22, 0.3);
