@@ -1,7 +1,6 @@
 import { random } from 'es-toolkit';
 import { createSignal, useContext } from 'solid-js';
 import { AppContext } from '../AppContext/AppContext';
-import { type DeserializedSong } from '../../lib/songSerialization';
 import Modal from '../Modal/Modal';
 import Button from '../Button/Button';
 import TextInput from '../TextInput/TextInput';
@@ -23,6 +22,14 @@ export default function SaveSongModal(props: { onClose(): void }) {
     'Immaterial',
     'Response to Subdivisions ☾',
     'Chase the Tear',
+    'Alone but moving',
+    `Gollum's song`,
+    'One More Red Nightmare',
+    'Alien Observer',
+    'Melt!',
+    'So Good, So Right',
+    'Gravity that Binds',
+    'all end',
   ];
 
   const handleSubmit = (evt: SubmitEvent) => {
@@ -30,9 +37,8 @@ export default function SaveSongModal(props: { onClose(): void }) {
 
     let song = {
       name: songName(),
-      drums: context?.drums,
-      keys: context?.keys,
-    } as DeserializedSong;
+      ...context?.getSong()!,
+    };
 
     const success = saveSong(song);
 

@@ -30,9 +30,18 @@ export default function LoadSongModal(props: { onClose(): void }) {
     dateStyle: 'short',
   });
 
+  const switchTab = (tab: 'savedSongs' | 'loadFromString') => {
+    setActiveTab(tab);
+    setSelectedSong(null);
+    setHasError(false);
+    setHasParsingError(false);
+  };
+
   const handleSongLoading = () => {
     setHasError(false);
     try {
+      context?.setBpm(selectedSong()?.bpm as DeserializedSong['bpm']);
+      context?.setOscWave(selectedSong()?.waveType as DeserializedSong['waveType']);
       context?.setDrums(selectedSong()?.drums as DeserializedSong['drums']);
       context?.setKeys(selectedSong()?.keys as DeserializedSong['keys']);
       props.onClose();
@@ -61,13 +70,17 @@ export default function LoadSongModal(props: { onClose(): void }) {
         <div class={styles.tabsWrapper}>
           <div class={styles.tabs}>
             <button
-              onClick={() => setActiveTab('savedSongs')}
+              onClick={() => {
+                switchTab('savedSongs');
+              }}
               classList={{ [styles.tab]: true, [styles.active]: activeTab() === 'savedSongs' }}
             >
               Load locally
             </button>
             <button
-              onClick={() => setActiveTab('loadFromString')}
+              onClick={() => {
+                switchTab('loadFromString');
+              }}
               classList={{ [styles.tab]: true, [styles.active]: activeTab() === 'loadFromString' }}
             >
               Import

@@ -7,7 +7,7 @@ import { AppContext, type AppContextValue } from './AppContext';
 const STEPS_LENGHT = 32;
 const STEPS_ARRAY = Array.from({ length: STEPS_LENGHT }, (_, i) => i + 1);
 
-type KeysStore = Record<number, { freq?: number; length?: number }[]>;
+type KeysStore = Record<number, { freq: number; length: number }[]>;
 
 export default function AppContextProvider(props: {
   value?: AppContextValue;
@@ -39,6 +39,19 @@ export default function AppContextProvider(props: {
   const [keys, setKeys] = createStore(initialKeysStore);
   const [activeInstruments, toggleInstrument] = createStore(initialInstrumentsStore);
 
+  const getSong = () => {
+    // Spicy conversion to turn the Solid proxies
+    // back into plain JavaScript objects
+    return JSON.parse(
+      JSON.stringify({
+        bpm: bpm(),
+        waveType: oscWave(),
+        drums: drums,
+        keys: keys,
+      }),
+    );
+  };
+
   const [appStore, _] = createStore({
     bpm,
     setBpm,
@@ -58,6 +71,7 @@ export default function AppContextProvider(props: {
     setCurrentStep,
     activeInstruments,
     toggleInstrument,
+    getSong,
   });
 
   return (

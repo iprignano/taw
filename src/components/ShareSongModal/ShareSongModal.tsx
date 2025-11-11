@@ -3,20 +3,18 @@ import { AppContext } from '../AppContext/AppContext';
 import Modal from '../Modal/Modal';
 import Button from '../Button/Button';
 import styles from './styles.module.css';
-import { serializeSong, type DeserializedSong } from '../../lib/songSerialization';
+import { serializeSong } from '../../lib/songSerialization';
 
 export default function ShareSongModal(props: { onClose(): void }) {
   const context = useContext(AppContext);
   const [hasCopied, setHasCopied] = createSignal(false);
 
   const shareableSong = createMemo(() => {
-    const song = JSON.parse(
-      JSON.stringify({
-        name: 'my tune',
-        drums: context?.drums,
-        keys: context?.keys,
-      }),
-    ) as DeserializedSong;
+    const song = {
+      name: 'shared tune',
+      created: new Date().toISOString(),
+      ...context?.getSong()!,
+    };
     const serializedSong = serializeSong(song);
     return btoa(JSON.stringify(serializedSong));
   });

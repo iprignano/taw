@@ -1,8 +1,9 @@
 import { createContext, type Accessor, type Setter } from 'solid-js';
 import type { Store, SetStoreFunction } from 'solid-js/store';
+import type { DeserializedSong } from '../../lib/songSerialization';
 
 type DrumsStore = Store<Record<'kick' | 'snare' | 'hihats', boolean[]>>;
-type KeysStore = Store<Record<number, { freq?: number; length?: number }[]>>;
+type KeysStore = Store<Record<number, { freq: number; length: number }[]>>;
 type InstrumentsStore = Store<Record<'kick' | 'snare' | 'hihats', boolean>>;
 
 export type AppContextValue = Store<{
@@ -24,6 +25,7 @@ export type AppContextValue = Store<{
   setKeys: SetStoreFunction<KeysStore>;
   activeInstruments: InstrumentsStore;
   toggleInstrument: SetStoreFunction<InstrumentsStore>;
+  getSong(): Omit<DeserializedSong, 'created' | 'name'>;
 }>;
 
 export const AppContext = createContext<AppContextValue>();

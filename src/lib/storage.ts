@@ -35,12 +35,10 @@ export const getSavedSongs = () => {
   }
 };
 
-export const saveSong = (song: DeserializedSong) => {
+export const saveSong = (song: Omit<DeserializedSong, 'created'>) => {
   try {
     const savedSongs = getSongStore();
 
-    // Spicy conversion to turn the Solid proxies
-    // back into plain JavaScript objects
     const plainSong: DeserializedSong = JSON.parse(
       JSON.stringify({
         ...song,
