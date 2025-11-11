@@ -62,14 +62,17 @@ const oscTypes: { wave: OscillatorType; label: string }[] = [
 
 export default function Keyboard() {
   const context = useContext(AppContext);
+  const getOscTypeIndexForWave = () =>
+    oscTypes.findIndex(({ wave }) => wave === context?.oscWave());
+
   const [isPressedDown, setIsPressedDown] = createSignal(false);
   const [currentOctave, setCurrentOctave] = createSignal(3);
-  const [oscWaveIndex, setOscWaveIndex] = createSignal(0);
+  const [oscWaveIndex, setOscWaveIndex] = createSignal(getOscTypeIndexForWave());
   const [notesPlaying, setNotesPlaying] = createSignal<number[]>([]);
   const [notes, setNotes] = createSignal(initialNotes);
 
   createEffect(() => {
-    context?.setOscWave(oscTypes[oscWaveIndex()].wave);
+    setOscWaveIndex(getOscTypeIndexForWave());
   });
 
   const lowerOctave = () => {
@@ -187,13 +190,13 @@ export default function Keyboard() {
             step="1"
             value={oscWaveIndex()}
             list="wavesList"
-            onChange={(evt) => setOscWaveIndex(Number(evt.target.value))}
+            onChange={(evt) => context?.setOscWave(oscTypes[Number(evt.target.value)].wave)}
           />
 
           <datalist id="wavesList">
-            {oscTypes.map(({ label }, index) => {
-              return <option value={index} label={label}></option>;
-            })}
+            {oscTypes.map(({ label }, index) => (
+              <option value={index} label={label}></option>
+            ))}
           </datalist>
         </div>
       </div>

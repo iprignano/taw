@@ -200,7 +200,7 @@
 }
 
 .highlighted {
-  background-color: #b3b3b3;
+  background-color: var(--primary-accent-color);
 }
 
 @media screen and (min-width: 900px) {
