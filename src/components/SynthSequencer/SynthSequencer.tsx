@@ -1,8 +1,9 @@
 import { throttle } from 'es-toolkit/function';
-import { createEffect, createMemo, createSignal, Index, onCleanup, useContext } from 'solid-js';
+import { createEffect, createMemo, createSignal, Index, useContext } from 'solid-js';
 
 import { AppContext } from '../AppContext/AppContext';
 import { noteRegistry } from './notes';
+import { useTimeMarker, type MarkerStyles } from './useTimeMarker';
 
 import styles from './styles.module.css';
 
@@ -10,17 +11,23 @@ const STEPS_LENGHT = 32;
 const STEPS_ARRAY = Array.from({ length: STEPS_LENGHT }, (_, i) => i + 1);
 
 export default function SynthSequencer() {
-  const context = useContext(AppContext);
-  const [tdSize, setTdSize] = createSignal(0);
-  const [tableHeight, setTableHeight] = createSignal(0);
-  const [markerTransitionDuration, setMarkerTransitionDuration] = createSignal(0);
+  let tableRef!: HTMLTableElement;
+  let tdRef!: HTMLTableCellElement;
+  const context = useContext(AppContext)!;
+
+  const [timeMarkerStyles, setTimeMarkerStyles] = createSignal<MarkerStyles>();
   const [draggedNote, setDraggedNote] = createSignal<{ step: number; freq: number } | null>(null);
 
+  createEffect(() => {
+    const markerStyles = useTimeMarker({ context, tableRef, tdRef })!;
+    setTimeMarkerStyles(markerStyles);
+  });
+
   const toggleNote = ({ step, freq }: { step: number; freq: number }) => {
-    if (context?.keys[step].find((n) => n.freq === freq)) {
-      context?.setKeys(step, (n) => n.filter(({ freq: f }) => f !== freq));
+    if (context.keys[step].find((n) => n.freq === freq)) {
+      context.setKeys(step, (n) => n.filter(({ freq: f }) => f !== freq));
     } else {
-      context?.setKeys(step, context?.keys[step].length, { freq, length: 1 });
+      context.setKeys(step, context.keys[step].length, { freq, length: 1 });
     }
   };
 
@@ -50,38 +57,15 @@ export default function SynthSequencer() {
       return;
     }
 
-    context?.setKeys(draggedNote()?.step as number, (note) => note?.freq === draggedNote()?.freq, {
+    context.setKeys(draggedNote()?.step as number, (note) => note?.freq === draggedNote()?.freq, {
       freq: draggedNote()?.freq,
       length: Math.max(1, step + 1 - (draggedNote()?.step ?? 0)),
     });
   }, 100);
 
-  let tableRef!: HTMLTableElement;
-  let tdRef!: HTMLTableCellElement;
-  createEffect(() => {
-    setTableHeight(tableRef.getBoundingClientRect().height);
-    const setCellSize = () => setTdSize(tdRef.getBoundingClientRect().width);
-    setCellSize();
-
-    // Needed to avoid the marker animate back to step 0 when the loop wraps
-    setMarkerTransitionDuration(context?.currentStep() === 32 ? 0 : 60 / context?.bpm()! / 4);
-
-    document.addEventListener('resize', setCellSize);
-    onCleanup(() => {
-      document.removeEventListener('resize', setCellSize);
-    });
-  });
-
   return (
     <div class={styles.wrapper}>
-      <div
-        class={styles.timeMarker}
-        style={{
-          height: `${tableHeight()}px`,
-          transform: `translate3d(${tdSize() + context?.currentStep()! * tdSize()}px, 0, 0)`,
-          'transition-duration': `${markerTransitionDuration()}s`,
-        }}
-      ></div>
+      <div class={styles.timeMarker} style={timeMarkerStyles()}></div>
       <table class={styles.noteTable} ref={tableRef}>
         <tbody>
           <Index each={noteRegistry}>
@@ -96,7 +80,7 @@ export default function SynthSequencer() {
                 <Index each={STEPS_ARRAY}>
                   {(step) => {
                     const matchingNote = createMemo(() =>
-                      context?.keys[step()].find((n) => n?.freq === note().freq),
+                      context.keys[step()].find((n) => n?.freq === note().freq),
                     );
                     return (
                       <td
@@ -105,7 +89,7 @@ export default function SynthSequencer() {
                       >
                         {matchingNote() && (
                           <div
-                            class={step() === context?.currentStep() ? `${styles.highlight}` : ''}
+                            class={step() === context.currentStep() ? `${styles.highlight}` : ''}
                             style={{ width: `calc(100% * ${matchingNote()?.length})` }}
                           >
                             {note().note}
