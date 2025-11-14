@@ -1,9 +1,5 @@
-import { createEffect, createSignal, onCleanup, useContext } from 'solid-js';
+import { createSignal, useContext } from 'solid-js';
 import { AppContext } from '../AppContext/AppContext';
-
-type NoteStyles = {
-  transform: string;
-};
 
 type NoteProps = { step: number; freq: number };
 
@@ -11,6 +7,7 @@ export const useNotesDragEvents = () => {
   const context = useContext(AppContext)!;
 
   const [isPressingDown, setIsPressingDown] = createSignal<boolean>(false);
+  const [clickedNote, setClickedNote] = createSignal<NoteProps | null>(null);
   const [draggedNote, setDraggedNote] = createSignal<NoteProps | null>(null);
   const [dragTargetNote, setDragTargetNote] = createSignal<NoteProps | null>(null);
 
@@ -18,13 +15,15 @@ export const useNotesDragEvents = () => {
     evt.preventDefault();
     setIsPressingDown(true);
 
-    setDraggedNote(noteProps);
+    // We store this for later reference
+    // in case the user is dragging it
+    setClickedNote(noteProps);
   };
 
   const onNoteMouseUp = (_: MouseEvent, { step, freq }: NoteProps) => {
     setIsPressingDown(false);
 
-    // If the user was dragging a note, remove that one from the sequence
+    // If the user was dragging a note, remove it from the sequence
     if (draggedNote()) {
       context.setKeys(draggedNote()!.step, (n) =>
         n.filter(({ freq: f }) => f !== draggedNote()!.freq),
@@ -38,11 +37,16 @@ export const useNotesDragEvents = () => {
       context.setKeys(step, context.keys[step].length, { freq, length: 1 });
     }
 
+    setClickedNote(null);
     setDraggedNote(null);
+    setDragTargetNote(null);
   };
 
   const onCellMouseEnter = (_: MouseEvent, noteProps: NoteProps) => {
     if (!isPressingDown()) return;
+
+    // The user is dragging a note
+    setDraggedNote(clickedNote);
     setDragTargetNote(noteProps);
   };
 
