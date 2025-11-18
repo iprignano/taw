@@ -36,7 +36,7 @@ export default function BpmInput() {
 
           // Do nothing if the value is not in range
           if (newBpm < minBpm || newBpm > maxBpm || Number.isNaN(newBpm)) {
-            tempoInputRef.value = String(context?.bpm);
+            tempoInputRef.value = String(context?.bpm());
             return;
           }
 

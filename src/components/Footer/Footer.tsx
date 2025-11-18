@@ -37,7 +37,6 @@ export default function Footer() {
     };
 
     document.addEventListener('keydown', onKeyDown);
-
     onCleanup(() => {
       document.removeEventListener('keydown', onKeyDown);
     });
