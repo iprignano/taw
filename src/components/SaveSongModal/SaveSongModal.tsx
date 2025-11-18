@@ -1,5 +1,5 @@
 import { random } from 'es-toolkit';
-import { createSignal, useContext } from 'solid-js';
+import { createEffect, createSignal, useContext } from 'solid-js';
 import { AppContext } from '../AppContext/AppContext';
 import Modal from '../Modal/Modal';
 import Button from '../Button/Button';
@@ -35,6 +35,8 @@ export default function SaveSongModal(props: { onClose(): void }) {
   const handleSubmit = (evt: SubmitEvent) => {
     evt.preventDefault();
 
+    if (hasSaved()) return;
+
     let song = {
       name: songName(),
       ...context?.getSong()!,
@@ -48,7 +50,7 @@ export default function SaveSongModal(props: { onClose(): void }) {
       setTimeout(() => {
         setHasSaved(false);
         props.onClose();
-      }, 1000);
+      }, 2000);
     } else {
       setHasError(true);
     }
@@ -75,7 +77,11 @@ export default function SaveSongModal(props: { onClose(): void }) {
             <Button variant="alternate" onClick={() => props.onClose()}>
               Cancel
             </Button>
-            <Button type="submit" icon="save">
+            <Button
+              type="submit"
+              icon={hasSaved() ? 'check' : 'save'}
+              variant={hasSaved() ? 'green' : 'primary'}
+            >
               {hasSaved() ? 'Saved!' : 'Save'}
             </Button>
           </div>
