@@ -1,5 +1,6 @@
 import { createMemo, createSignal, onCleanup, useContext } from 'solid-js';
 import { AppContext } from '../AppContext/AppContext';
+import { throttle } from 'es-toolkit';
 
 export type MarkerStyles = {
   height: string;
@@ -28,13 +29,13 @@ export const useTimeMarker = ({
   // Get the table and table cells bounding boxes and
   // store their dimensions to calculate the marker styles later
   setTableHeight(tableRef?.getBoundingClientRect().height);
-  const setCellSize = () => setTdSize(tdRef?.getBoundingClientRect().width);
+  const setCellSize = throttle(() => setTdSize(tdRef?.getBoundingClientRect().width), 100);
   setCellSize();
 
   // Make sure we track the table cells sizes on resize
-  document.addEventListener('resize', setCellSize);
+  window.addEventListener('resize', setCellSize);
   onCleanup(() => {
-    document.removeEventListener('resize', setCellSize);
+    window.removeEventListener('resize', setCellSize);
   });
 
   const markerStyles = createMemo<MarkerStyles>(() => ({

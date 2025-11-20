@@ -42,7 +42,8 @@ export const saveSong = (song: Omit<DeserializedSong, 'created'>) => {
     const plainSong: DeserializedSong = JSON.parse(
       JSON.stringify({
         ...song,
-        created: new Date().toISOString(),
+        createdAt: new Date().toISOString(),
+        id: crypto.randomUUID(),
       }),
     );
     const newSong = serializeSong(plainSong);
@@ -71,7 +72,7 @@ export const deleteSong = (song: DeserializedSong) => {
     }
 
     const newStorage = {
-      songs: [...savedSongs.filter(({ n, c }) => n !== song.name && c !== song.created)],
+      songs: [...savedSongs.filter(({ id }) => id !== song.id)],
     };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(newStorage));
 

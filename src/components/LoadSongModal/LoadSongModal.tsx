@@ -110,11 +110,11 @@ export default function LoadSongModal(props: { onClose(): void }) {
                           <div
                             classList={{
                               [styles.song]: true,
-                              [styles.selected]: selectedSong()?.name === song.name,
+                              [styles.selected]: selectedSong()?.id === song.id,
                             }}
                           >
                             <button type="button" onClick={() => setSelectedSong(song)}>
-                              <span>[{dateFormatter.format(new Date(song.created))}]</span>{' '}
+                              <span>[{dateFormatter.format(new Date(song.createdAt))}]</span>{' '}
                               {song.name}
                             </button>
                             <button

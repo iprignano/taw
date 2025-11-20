@@ -1,4 +1,5 @@
 export type SerializedSong = {
+  id: string;
   n: string;
   b: number;
   w: OscillatorType;
@@ -14,6 +15,7 @@ export type SerializedSong = {
 };
 
 export type DeserializedSong = {
+  id: string;
   name: string;
   bpm: number;
   waveType: OscillatorType;
@@ -25,7 +27,7 @@ export type DeserializedSong = {
   keys: {
     [step: number]: { freq: number; length: number }[];
   };
-  created: string;
+  createdAt: string;
 };
 
 export const serializeSong = (song: DeserializedSong): SerializedSong => {
@@ -39,6 +41,7 @@ export const serializeSong = (song: DeserializedSong): SerializedSong => {
     }, {} as SerializedSong['k']);
 
   return {
+    id: song.id,
     n: song.name,
     b: song.bpm,
     w: song.waveType,
@@ -48,7 +51,7 @@ export const serializeSong = (song: DeserializedSong): SerializedSong => {
       h: serializeDrumSequence(song.drums.hihats),
     },
     k: serializeKeysSequence(song.keys),
-    c: song.created,
+    c: song.createdAt,
   };
 };
 
@@ -61,6 +64,7 @@ export const deserializeSong = (song: SerializedSong): DeserializedSong => {
     }, {} as DeserializedSong['keys']);
 
   return {
+    id: song.id,
     name: song.n,
     bpm: song.b,
     waveType: song.w,
@@ -70,6 +74,6 @@ export const deserializeSong = (song: SerializedSong): DeserializedSong => {
       hihats: deserializeDrumSequence(song.d.h),
     },
     keys: deserializeKeysSequence(song.k),
-    created: song.c,
+    createdAt: song.c,
   };
 };
