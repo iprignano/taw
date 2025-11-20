@@ -1,18 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="78px" height="78px" viewBox="0 0 78 78" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 61.2 (89653) - https://sketch.com -->
-    <title>Artboard</title>
-    <desc>Created with Sketch.</desc>
-    <defs>
-        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
-            <stop stop-color="#9500F8" offset="0%"></stop>
-            <stop stop-color="#5B00EF" offset="100%"></stop>
-        </linearGradient>
-    </defs>
-    <g id="Artboard" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <rect id="Rectangle" fill="url(#linearGradient-1)" x="0" y="0" width="78" height="78" rx="8"></rect>
-        <text id="&gt;" font-family="GeistMono-Regular, Geist Mono" font-size="60" font-weight="normal" letter-spacing="-2.21175146" fill="#FFFFFF">
-            <tspan x="22" y="57">&gt;</tspan>
-        </text>
-    </g>
-</svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg width="100%" height="100%" viewBox="0 0 196 196" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><rect id="Artboard3" x="0" y="0" width="195.36" height="195.36" style="fill:none;"/><clipPath id="_clip1"><rect x="0" y="0" width="195.36" height="195.36"/></clipPath><g clip-path="url(#_clip1)"><path d="M195.36,18.949l0,157.462c0,10.458 -8.491,18.949 -18.949,18.949l-157.462,0c-10.458,0 -18.949,-8.491 -18.949,-18.949l-0,-157.462c0,-10.458 8.491,-18.949 18.949,-18.949l157.462,0c10.458,0 18.949,8.491 18.949,18.949Z" style="fill:#1a1a1a;"/><clipPath id="_clip2"><path d="M195.36,18.949l0,157.462c0,10.458 -8.491,18.949 -18.949,18.949l-157.462,0c-10.458,0 -18.949,-8.491 -18.949,-18.949l-0,-157.462c0,-10.458 8.491,-18.949 18.949,-18.949l157.462,0c10.458,0 18.949,8.491 18.949,18.949Z"/></clipPath><g clip-path="url(#_clip2)"><path d="M133.301,91.393c2.279,1.272 3.691,3.677 3.691,6.287c0,2.61 -1.412,5.015 -3.691,6.287c-16.707,9.326 -47.841,26.704 -64.223,35.848c-2.23,1.245 -4.952,1.215 -7.154,-0.078c-2.202,-1.293 -3.555,-3.655 -3.555,-6.209l0,-71.696c0,-2.554 1.353,-4.916 3.555,-6.209c2.202,-1.293 4.925,-1.322 7.154,-0.078c16.381,9.144 47.516,26.522 64.223,35.848Z" style="fill:#ffb11f;"/></g></g></svg>
