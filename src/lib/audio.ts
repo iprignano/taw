@@ -1,5 +1,6 @@
 let audioContext: AudioContext;
 let compressor: DynamicsCompressorNode;
+let noiseBufferNode: AudioBuffer;
 
 const getAudioContext = () => {
   if (typeof audioContext !== 'undefined') return audioContext;
@@ -41,17 +42,24 @@ const getFilterNode = (type: BiquadFilterType, frequency: number, Q?: number) =>
 const getNoiseAudioNode = () => {
   const audioCtx = getAudioContext();
   const bufferSize = audioCtx.sampleRate;
+  let noiseBuffer;
 
-  // create an empty buffer
-  const noiseBuffer = new AudioBuffer({
-    length: bufferSize,
-    sampleRate: audioCtx.sampleRate,
-  });
+  if (noiseBufferNode) {
+    noiseBuffer = noiseBufferNode;
+  } else {
+    // create an empty buffer
+    const noiseBuffer = new AudioBuffer({
+      length: bufferSize,
+      sampleRate: audioCtx.sampleRate,
+    });
 
-  // fill the buffer with noise
-  const data = noiseBuffer.getChannelData(0);
-  for (let i = 0; i < bufferSize; i++) {
-    data[i] = Math.random() * 2 - 1;
+    // fill the buffer with noise
+    const data = noiseBuffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      data[i] = Math.random() * 2 - 1;
+    }
+
+    noiseBufferNode = noiseBuffer;
   }
 
   return new AudioBufferSourceNode(audioCtx, {
