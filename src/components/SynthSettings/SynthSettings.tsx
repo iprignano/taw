@@ -22,30 +22,56 @@ export default function SynthSettings() {
 
   return (
     <div class={styles.wrapper}>
-      <h3 class={styles.optionTitle}>wave type</h3>
-      <fieldset>
-        <div class={styles.waves}>
-          {waves.map((wave) => (
-            <div
-              classList={{
-                [styles.radioContainer]: true,
-                [styles.isSelected]: context?.oscWave() === wave,
-              }}
-            >
-              <Dynamic component={waveIcons[wave]} fill={'currentColor'} />
-              <input
-                class={styles.radio}
-                type="radio"
-                name="waveType"
-                value={wave}
-                id={wave}
-                onChange={(evt) => context?.setOscWave(evt.target.value as OscillatorType)}
-              />
-              <label for={wave}>{wave}</label>
-            </div>
-          ))}
-        </div>
-      </fieldset>
+      <div>
+        <h3 class={styles.optionTitle}>wave type</h3>
+        <fieldset>
+          <div class={styles.waves}>
+            {waves.map((wave) => (
+              <div
+                classList={{
+                  [styles.radioContainer]: true,
+                  [styles.isSelected]: context?.oscWave() === wave,
+                }}
+              >
+                <Dynamic component={waveIcons[wave]} fill={'currentColor'} />
+                <input
+                  class={styles.radio}
+                  type="radio"
+                  name="waveType"
+                  value={wave}
+                  id={wave}
+                  onChange={(evt) => context?.setOscWave(evt.target.value as OscillatorType)}
+                />
+                <label for={wave}>{wave}</label>
+              </div>
+            ))}
+          </div>
+        </fieldset>
+      </div>
+      <div>
+        <h3 class={styles.optionTitle}>attack</h3>
+        <input
+          type="range"
+          class={styles.slider}
+          value={context?.synthAttack()}
+          min={0.05}
+          max={0.8}
+          step={0.05}
+          onChange={(evt) => context?.setSynthAttack(Number(evt.target.value))}
+        />
+      </div>
+      <div>
+        <h3 class={styles.optionTitle}>release</h3>
+        <input
+          type="range"
+          class={styles.slider}
+          value={context?.synthRelease()}
+          min={0.02}
+          max={0.2}
+          step={0.02}
+          onChange={(evt) => context?.setSynthRelease(Number(evt.target.value))}
+        />
+      </div>
     </div>
   );
 }

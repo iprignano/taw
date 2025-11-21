@@ -142,15 +142,23 @@ const playHihats = (time: number) => {
 // Synth
 // ================
 let notesPlaying: Record<number, { osc: OscillatorNode; gain: GainNode }> = {};
+const outputVolume = 0.4;
 
-const playNote = (frequency: number, wave?: OscillatorType, duration?: number) => {
+const playNote = (params: {
+  frequency: number;
+  wave?: OscillatorType;
+  duration?: number;
+  attack?: number;
+  release?: number;
+}) => {
+  const { frequency, wave, duration, attack = 0.2, release = 0.1 } = params;
   if (notesPlaying[frequency]) return;
 
   const audioCtx = getAudioContext();
   const destination = getDestinationNode();
   const osc = audioCtx.createOscillator();
   const gain = audioCtx.createGain();
-  gain.gain.value = 0.2;
+  gain.gain.value = 0;
   osc.type = wave || 'sine';
   osc.connect(gain);
   gain.connect(destination);
@@ -159,20 +167,35 @@ const playNote = (frequency: number, wave?: OscillatorType, duration?: number) =
   osc.start();
 
   if (duration) {
-    gain.gain.setTargetAtTime(0, audioCtx.currentTime + duration, 0.2);
+    gain.gain.setTargetAtTime(outputVolume, audioCtx.currentTime, attack);
+    gain.gain.setTargetAtTime(0, audioCtx.currentTime + duration, release);
+
+    setTimeout(() => {
+      // Disconnect nodes for GC
+      osc.disconnect();
+      gain.disconnect();
+    }, duration * 1000 + release * 6000);
   } else {
+    gain.gain.setTargetAtTime(outputVolume, audioCtx.currentTime, attack);
     notesPlaying[frequency] = { osc, gain };
   }
 };
 
-const releaseNote = (frequency: number) => {
+const releaseNote = (params: { frequency: number; release?: number }) => {
+  const { frequency, release = 0.1 } = params;
   const note = notesPlaying[frequency];
   if (!note) return;
 
   const audioCtx = getAudioContext();
-  note.gain.gain.setTargetAtTime(0, audioCtx.currentTime, 0.2);
+  note.gain.gain.setTargetAtTime(0, audioCtx.currentTime, release);
 
   delete notesPlaying[frequency];
+
+  setTimeout(() => {
+    // Disconnect nodes for GC
+    note.osc.disconnect();
+    note.gain.disconnect();
+  }, release * 6000);
 };
 
 export { getAudioContext, playHihats, playKick, playSnare, playNote, releaseNote };

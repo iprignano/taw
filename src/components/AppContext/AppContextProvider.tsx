@@ -17,6 +17,8 @@ export default function AppContextProvider(props: {
   const [oscWave, setOscWave] = createSignal<OscillatorType>('sine');
   const [isPlaying, setIsPlaying] = createSignal(false);
   const [currentStep, setCurrentStep] = createSignal(0);
+  const [synthAttack, setSynthAttack] = createSignal(0.1);
+  const [synthRelease, setSynthRelease] = createSignal(0.1);
   const [isSequencingKeys, setIsSequencingKeys] = createSignal(false);
   const [isModalOpen, setIsModalOpen] = createSignal(false);
 
@@ -63,6 +65,10 @@ export default function AppContextProvider(props: {
     setIsModalOpen,
     oscWave,
     setOscWave,
+    synthAttack,
+    setSynthAttack,
+    synthRelease,
+    setSynthRelease,
     drums,
     setDrums,
     keys,

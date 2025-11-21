@@ -19,6 +19,10 @@ export type AppContextValue = Store<{
   setCurrentStep: Setter<number>;
   oscWave: Accessor<OscillatorType>;
   setOscWave: Setter<OscillatorType>;
+  synthAttack: Accessor<number>;
+  setSynthAttack: Setter<number>;
+  synthRelease: Accessor<number>;
+  setSynthRelease: Setter<number>;
   drums: DrumsStore;
   setDrums: SetStoreFunction<DrumsStore>;
   keys: KeysStore;

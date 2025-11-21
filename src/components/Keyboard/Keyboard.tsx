@@ -90,14 +90,22 @@ export default function Keyboard() {
     setNotes(notes().map(({ note, freq }) => ({ note, freq: freq * 2 })));
   };
   const playNote = (note: number) => {
-    playAudioNote(note, context?.oscWave());
+    playAudioNote({
+      frequency: note,
+      wave: context?.oscWave(),
+      attack: context?.synthAttack(),
+      release: context?.synthRelease(),
+    });
     setNotesPlaying(() => {
       const notes = union(notesPlaying(), [note]);
       return notes;
     });
   };
   const releaseNote = (note: number) => {
-    releaseAudioNote(note);
+    releaseAudioNote({
+      frequency: note,
+      release: context?.synthRelease(),
+    });
     setNotesPlaying(() => {
       const notes = difference(notesPlaying(), [note]);
       return notes;
